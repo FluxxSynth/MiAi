@@ -36,7 +36,6 @@ try:
     HAS_FLASK = True
 except ImportError:
     HAS_FLASK = False
-    print("⚠  pip install flask  for web UI")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -290,7 +289,8 @@ class Conversation:
                     data = json.load(f)
                 self.turns = data.get("turns", [])
                 print(f"✔  Loaded {len(self.turns)} turns from history.")
-            except: pass
+            except (json.JSONDecodeError, OSError) as e:
+                print(f"⚠  Could not load history: {e}")
 
     # Keep only recent turns that fit in context
     def recent(self, max_turns: int = 10) -> list[dict]:
@@ -435,7 +435,7 @@ function md(t){
           .replace(/`([^`]+)`/g,"<code>$1</code>")
           .replace(/\\*\\*(.*?)\\*\\*/g,"<b>$1</b>")
           .replace(/\\*(.*?)\\*/g,"<i>$1</i>")
-          .replace(/\n/g,"<br>");
+          .replace(/\\n/g,"<br>");
 }
 function addBubble(role,text){
   const chat=document.getElementById("chat");
@@ -631,16 +631,21 @@ def main():
     kb   = KnowledgeBase(args.kb) if args.kb else KnowledgeBase(None)
     conv = Conversation(args.history_file)
 
-    if not args.no_web and HAS_FLASK:
-        app = create_app(model, tokenizer, conv, kb, args, device, fmt)
-        url = f"http://localhost:{args.port}"
-        print(f"\n🌐  Web UI → {url}")
-        print("    Open in your browser. Ctrl+C to stop.\n")
-        def _open():
-            time.sleep(1.5)
-            import webbrowser; webbrowser.open(url)
-        threading.Thread(target=_open, daemon=True).start()
-        app.run(host="0.0.0.0", port=args.port, debug=False)
+    if not args.no_web:
+        if HAS_FLASK:
+            app = create_app(model, tokenizer, conv, kb, args, device, fmt)
+            url = f"http://localhost:{args.port}"
+            print(f"\n🌐  Web UI → {url}")
+            print("    Open in your browser. Ctrl+C to stop.\n")
+            def _open():
+                time.sleep(1.5)
+                import webbrowser; webbrowser.open(url)
+            threading.Thread(target=_open, daemon=True).start()
+            app.run(host="0.0.0.0", port=args.port, debug=False)
+        else:
+            print("⚠  Flask not installed. Install with: pip install flask")
+            print("   Falling back to terminal mode.\n")
+            terminal_loop(model, tokenizer, conv, kb, args, device, fmt)
     else:
         terminal_loop(model, tokenizer, conv, kb, args, device, fmt)
 

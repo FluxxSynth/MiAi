@@ -28,7 +28,7 @@ Note on hardware:
 """
 
 import os, math, time, json, argparse, warnings, shutil
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("once", category=UserWarning, module="(transformers|torch|peft|datasets)")
 
 import torch
 import torch.nn.functional as F

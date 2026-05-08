@@ -18,13 +18,12 @@ except ImportError:
     print("❌  pytermgui not installed. Run: pip3 install pytermgui")
     sys.exit(1)
 
-import torch
-
 # Reuse chat.py logic
 from chat import (
     parse_args,
     load_model,
     generate,
+    get_device,
     Conversation,
     KnowledgeBase,
     detect_format,
@@ -34,7 +33,7 @@ from chat import (
 
 def main():
     args = parse_args()
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = get_device()
 
     if not os.path.exists(args.model):
         print(f"\n❌  No model at '{args.model}'. Run train.py first.\n")
@@ -129,7 +128,7 @@ def main():
                 conv.add_user(text)
                 last_user = text
 
-            prompt = build_prompt(conv.recent(), text, fmt, kb_ctx)
+            prompt = build_prompt(conv.recent(), text, fmt, kb_ctx, conv.persona)
 
             t0 = time.time()
             try:

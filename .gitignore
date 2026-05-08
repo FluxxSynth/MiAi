@@ -57,5 +57,8 @@ dist/
 build/
 *.egg-info/
 
+# Runtime files
+chat_history.json
+
 # GitNexus
 .gitnexus/

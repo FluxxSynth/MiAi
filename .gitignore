@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+.env
+*.log
+.DS_Store
+checkpoint*.pt
+chat_history.json
+train_log.jsonl

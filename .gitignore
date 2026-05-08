@@ -1,11 +1,64 @@
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
 venv/
 .venv/
-.env
-*.log
+env/
+.env/
+virtualenv/
+
+# IDE / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Training artifacts
 checkpoint*.pt
-chat_history.json
+checkpoint_*.pt
 train_log.jsonl
+
+# Model saves
+finetuned-model-best/
+finetuned-model-dpo/
+finetuned-model_adapter/
+
+# Environment / Secrets
+.env
+*.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+coverage/
+.coverage
+htmlcov/
+
+# PyPI
+dist/
+build/
+*.egg-info/
+
+# Runtime files
+chat_history.json
+
+# GitNexus
+.gitnexus/

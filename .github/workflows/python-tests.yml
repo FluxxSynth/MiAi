@@ -1,0 +1,48 @@
+name: Python Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.10"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Install core + dev extras only — perf extras (flash-attn, einops)
+          # require CUDA and would fail on CPU-only CI runners.
+          pip install ".[dev]"
+
+      - name: Lint with flake8
+        run: |
+          # flake8 comes from the [dev] extra installed above
+          flake8 chat.py tui_chat.py train.py test_tui_chat_mocked.py \
+            --count --select=E9,F63,F7,F82 --show-source --statistics \
+            --per-file-ignores="tui_chat.py:F823"
+
+      - name: Run unit tests
+        run: |
+          python -m unittest test_tui_chat_mocked.py -v

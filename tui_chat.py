@@ -78,7 +78,6 @@ def main():
                 add_message(turn["role"], turn["text"])
 
         def handle_command(text: str) -> bool:
-            nonlocal last_user
             parts = text.split()
             cmd = parts[0].lower()
 

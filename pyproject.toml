@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta:__legacy__"
+
+[project]
+name = "miai"
+version = "0.1.0"
+description = "Fine-tuned LLM chatbot with Mistral-7B / LLaMA-3"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+  { name = "FluxxSynth" },
+]
+keywords = ["llm", "chatbot", "fine-tuning", "qlora", "mistral", "llama"]
+
+dependencies = [
+    "torch>=2.0.0",
+    "transformers>=4.30.0",
+    "datasets>=2.12.0",
+    "accelerate>=0.21.0",
+    "tokenizers>=0.13.0",
+    "peft>=0.5.0",
+]
+
+[project.optional-dependencies]
+web = ["flask>=2.3.0"]
+tui = ["pytermgui>=7.0.0"]
+train = ["rich>=13.0.0", "bitsandbytes>=0.41.0", "trl>=0.7.0", "rouge-score>=0.1.0"]
+perf = ["flash-attn>=2.0.0", "einops>=0.6.0"]
+dev = ["flake8>=6.0", "pytest>=7.0"]
+
+[project.urls]
+Source = "https://github.com/FluxxSynth/MiAi"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["chat.py", "tui_chat.py", "train.py"]

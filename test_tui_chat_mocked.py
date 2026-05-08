@@ -141,7 +141,7 @@ class TestTUIChatMocked(unittest.TestCase):
                     args.beams = 1
                     args.rep_penalty = 1.15
 
-                    with patch.object(chat, "parse_args", return_value=args):
+                    with patch.object(tui_chat, "parse_args", return_value=args):
                         tui_chat.main()
 
         # Assertions on PyTermGUI calls
@@ -166,7 +166,7 @@ class TestTUIChatMocked(unittest.TestCase):
         args = MagicMock()
         args.model = "nonexistent-model"
 
-        with patch.object(chat, "parse_args", return_value=args):
+        with patch.object(tui_chat, "parse_args", return_value=args):
             with self.assertRaises(SystemExit) as cm:
                 tui_chat.main()
             self.assertEqual(cm.exception.code, 1)

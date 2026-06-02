@@ -117,10 +117,8 @@ def safe_eval_arithmetic(expression: str) -> Optional[float]:
         return None
 
 
-# ──────────────────────────────────────────────
-#  Helper: entity/triple extraction from text
-# ──────────────────────────────────────────────
 
+#  Helper: entity/triple extraction from text
 _RELATION_ALIASES: Dict[str, str] = {
     'is a': 'is_a',
     'is an': 'is_a',
@@ -213,12 +211,9 @@ def extract_triples(text: str) -> List[Tuple[str, str, str]]:
     return triples
 
 
-# ══════════════════════════════════════════════
-#  Component 1: KnowledgeGraph
-# ══════════════════════════════════════════════
 
-Triple = Tuple[str, str, str]  # (subject, relation, object)
-
+# KnowledgeGraph
+Triple = Tuple[str, str, str]  
 
 class KnowledgeGraph:
     """In-memory directed labelled graph (entity → relation → entity).
@@ -246,7 +241,7 @@ class KnowledgeGraph:
         if persistence_path and os.path.exists(persistence_path):
             self._load()
 
-    # -- persistence -------------------------------------------------------
+    #persistence 
 
     def _load(self) -> None:
         try:
@@ -408,7 +403,7 @@ class KnowledgeGraph:
         return f'KnowledgeGraph({len(self)} triples)'
 
 
-# ══════════════════════════════════════════════
+
 #  Component 2: RuleEngine
 # ══════════════════════════════════════════════
 
@@ -619,9 +614,9 @@ class RuleEngine:
         return self._kg.query(subject, relation, object)
 
 
-# ══════════════════════════════════════════════
+
 #  Component 3: WorkingMemory
-# ══════════════════════════════════════════════
+=zzzzzzzzzzzzzzzzzzzzzzzzzzzzddddddddddddddddddd
 
 @dataclass
 class TurnFacts:
